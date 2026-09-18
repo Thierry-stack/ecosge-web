@@ -471,6 +471,47 @@ svg { display: block; }
 .spotlight-facts dt { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--sky-400); margin-bottom: .25rem; }
 .spotlight-facts dd { font-weight: 600; color: #fff; font-size: .92rem; }
 
+/* ================= Circular 3D project gallery ================= */
+.circular-gallery-section { overflow: hidden; }
+.circular-gallery-hint {
+  text-align: center; font-size: .82rem; color: var(--gray-500); margin-top: 1.75rem;
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+}
+.circular-gallery-hint svg { width: 16px; height: 16px; }
+.circular-gallery {
+  --gallery-radius: 480px; --gallery-card-w: 230px; --gallery-card-h: 300px;
+  position: relative; width: 100%; height: 420px; margin-top: 3rem;
+  perspective: 1800px; cursor: grab; touch-action: pan-y; user-select: none;
+}
+.circular-gallery.is-dragging { cursor: grabbing; }
+@media (max-width: 1023px) {
+  .circular-gallery { --gallery-radius: 320px; --gallery-card-w: 180px; --gallery-card-h: 235px; height: 340px; }
+}
+@media (max-width: 639px) {
+  .circular-gallery { --gallery-radius: 185px; --gallery-card-w: 130px; --gallery-card-h: 172px; height: 260px; }
+}
+.circular-gallery-track {
+  position: relative; width: 100%; height: 100%; transform-style: preserve-3d;
+}
+.circular-gallery-item {
+  position: absolute; width: var(--gallery-card-w); height: var(--gallery-card-h);
+  left: 50%; top: 50%; margin-left: calc(var(--gallery-card-w) / -2); margin-top: calc(var(--gallery-card-h) / -2);
+  border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-lg);
+  background: var(--navy-800); border: 1px solid rgba(255,255,255,.08);
+}
+.circular-gallery-item img { width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; user-select: none; pointer-events: none; }
+.circular-gallery-cap {
+  position: absolute; inset-inline: 0; bottom: 0; padding: 1rem .9rem .85rem;
+  background: linear-gradient(0deg, rgba(5,15,36,.9), transparent 70%); color: #fff;
+}
+.circular-gallery-cap h3 { color: #fff; font-size: .92rem; margin-bottom: .15rem; line-height: 1.25; }
+.circular-gallery-cap span { font-size: .72rem; color: rgba(255,255,255,.7); }
+@media (max-width: 639px) {
+  .circular-gallery-cap { padding: .6rem .5rem .5rem; }
+  .circular-gallery-cap h3 { font-size: .72rem; }
+  .circular-gallery-cap span { font-size: .6rem; }
+}
+
 /* ================= Trusted-by strip ================= */
 .trusted-strip {
   background: linear-gradient(100deg, var(--sky-600), var(--sky-500) 60%, var(--sky-600));

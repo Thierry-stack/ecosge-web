@@ -131,6 +131,60 @@
     }, carouselIndex * 450);
   });
 
+  /* ---------- Circular 3D project gallery (auto-rotate + drag) ---------- */
+  var circGallery = document.getElementById('circularGallery');
+  var circTrack = document.getElementById('circularGalleryTrack');
+  if (circGallery && circTrack) {
+    var circItems = Array.prototype.slice.call(circTrack.querySelectorAll('.circular-gallery-item'));
+    var circAngles = circItems.map(function (_, i) { return i * (360 / circItems.length); });
+    var circRotation = 0;
+    var circAutoSpeed = 0.045;
+    var circDragging = false;
+    var circPaused = false;
+    var circStartX = 0;
+    var circStartRotation = 0;
+
+    function circApplyOpacity() {
+      circItems.forEach(function (item, i) {
+        var relative = ((circAngles[i] + circRotation) % 360 + 360) % 360;
+        var normalized = relative > 180 ? 360 - relative : relative;
+        item.style.opacity = Math.max(0.25, 1 - (normalized / 180) * 0.85);
+      });
+    }
+    function circRender() {
+      circTrack.style.transform = 'rotateY(' + circRotation + 'deg)';
+      circApplyOpacity();
+    }
+    circRender();
+
+    (function circFrame() {
+      if (!circDragging && !circPaused && !reduceMotion) circRotation += circAutoSpeed;
+      circRender();
+      requestAnimationFrame(circFrame);
+    })();
+
+    circGallery.addEventListener('mouseenter', function () { circPaused = true; });
+    circGallery.addEventListener('mouseleave', function () { circPaused = false; });
+
+    circGallery.addEventListener('pointerdown', function (e) {
+      circDragging = true;
+      circStartX = e.clientX;
+      circStartRotation = circRotation;
+      circGallery.classList.add('is-dragging');
+      circGallery.setPointerCapture(e.pointerId);
+    });
+    circGallery.addEventListener('pointermove', function (e) {
+      if (!circDragging) return;
+      circRotation = circStartRotation + (e.clientX - circStartX) * 0.35;
+    });
+    function circPointerUp() {
+      circDragging = false;
+      circGallery.classList.remove('is-dragging');
+    }
+    circGallery.addEventListener('pointerup', circPointerUp);
+    circGallery.addEventListener('pointercancel', circPointerUp);
+  }
+
   /* ---------- Scroll reveal ---------- */
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
