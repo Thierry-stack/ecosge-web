@@ -69,40 +69,6 @@
     });
   }
 
-  /* ---------- Hero slideshow ---------- */
-  var heroSlides = document.querySelectorAll('.hero-slide');
-  var heroDotsWrap = document.getElementById('heroDots');
-  if (heroSlides.length > 1) {
-    var current = 0;
-    var dots = [];
-    if (heroDotsWrap) {
-      heroSlides.forEach(function (_, i) {
-        var b = document.createElement('button');
-        b.type = 'button';
-        b.setAttribute('aria-label', 'Show slide ' + (i + 1));
-        if (i === 0) b.classList.add('is-active');
-        b.addEventListener('click', function () { show(i); restart(); });
-        heroDotsWrap.appendChild(b);
-        dots.push(b);
-      });
-    }
-    function show(i) {
-      heroSlides[current].classList.remove('is-active');
-      if (dots[current]) dots[current].classList.remove('is-active');
-      current = i;
-      heroSlides[current].classList.add('is-active');
-      if (dots[current]) dots[current].classList.add('is-active');
-    }
-    var timer;
-    function restart() {
-      clearInterval(timer);
-      if (!reduceMotion) {
-        timer = setInterval(function () { show((current + 1) % heroSlides.length); }, 5500);
-      }
-    }
-    restart();
-  }
-
   /* ---------- Auto-swiping card image carousels (project cards, spotlight) ---------- */
   document.querySelectorAll('.card-carousel').forEach(function (carousel, carouselIndex) {
     var imgs = Array.prototype.slice.call(carousel.querySelectorAll('img'));
@@ -148,7 +114,7 @@
       circItems.forEach(function (item, i) {
         var relative = ((circAngles[i] + circRotation) % 360 + 360) % 360;
         var normalized = relative > 180 ? 360 - relative : relative;
-        item.style.opacity = Math.max(0.25, 1 - (normalized / 180) * 0.85);
+        item.style.opacity = Math.max(0.38, 1 - (normalized / 180) * 0.68);
       });
     }
     function circRender() {

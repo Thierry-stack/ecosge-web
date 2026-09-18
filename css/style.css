@@ -282,16 +282,24 @@ svg { display: block; }
   position: relative; min-height: 100vh; display: flex; align-items: center;
   overflow: hidden; background: var(--navy-950);
 }
-.hero-slides { position: absolute; inset: 0; }
-.hero-slide {
-  position: absolute; inset: 0; background-size: cover; background-position: center;
-  opacity: 0; transition: opacity 1.4s ease;
-}
-.hero-slide.is-active { opacity: 1; }
+/* Scrim over the rotating gallery. Horizontal on wide screens so the
+   left-aligned copy stays readable while the cards on the right stay vivid;
+   pointer-events:none so it never swallows clicks meant for the content. */
 .hero::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(5,15,36,.75) 0%, rgba(5,15,36,.55) 40%, rgba(5,15,36,.88) 100%);
-  z-index: 1;
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  /* Narrow screens: copy sits directly over the cards, so the scrim has to
+     carry more weight than it does on desktop. */
+  background:
+    linear-gradient(180deg, rgba(5,5,5,.8) 0%, rgba(5,5,5,.74) 30%, rgba(5,5,5,.76) 70%, rgba(5,5,5,.9) 100%);
+}
+@media (min-width: 1024px) {
+  .hero::after {
+    /* Heavy on the left behind the copy, near-clear on the right so the
+       cards stay vivid. Kept to a single gradient — stacking a second one
+       darkened the photos noticeably. */
+    background:
+      linear-gradient(90deg, rgba(5,5,5,.93) 0%, rgba(5,5,5,.86) 30%, rgba(5,5,5,.45) 52%, rgba(5,5,5,.12) 72%, rgba(5,5,5,.08) 100%);
+  }
 }
 .hero-content { position: relative; z-index: 2; padding-block: 9rem 5rem; width: 100%; }
 .hero-badge {
@@ -317,9 +325,9 @@ svg { display: block; }
 }
 .hero-scroll-line { width: 1px; height: 34px; background: linear-gradient(180deg, rgba(255,255,255,.9), transparent); animation: scrollpulse 2s infinite; }
 @keyframes scrollpulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
-.hero-dots { position: absolute; z-index: 2; right: clamp(1.25rem,4vw,3.5rem); bottom: 6.5rem; display: flex; flex-direction: column; gap: .6rem; }
-.hero-dots button { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.35); transition: background var(--dur-fast), transform var(--dur-fast); }
-.hero-dots button.is-active { background: var(--sky-400); transform: scale(1.3); }
+
+/* The hero's rotating gallery backdrop is styled with the
+   .circular-gallery--hero modifier, defined after the base component below. */
 
 /* ---- Inner page banner ---- */
 .page-banner {
@@ -471,13 +479,9 @@ svg { display: block; }
 .spotlight-facts dt { font-size: .72rem; text-transform: uppercase; letter-spacing: .07em; color: var(--sky-400); margin-bottom: .25rem; }
 .spotlight-facts dd { font-weight: 600; color: #fff; font-size: .92rem; }
 
-/* ================= Circular 3D project gallery ================= */
-.circular-gallery-section { overflow: hidden; }
-.circular-gallery-hint {
-  text-align: center; font-size: .82rem; color: var(--gray-500); margin-top: 1.75rem;
-  display: flex; align-items: center; justify-content: center; gap: .5rem;
-}
-.circular-gallery-hint svg { width: 16px; height: 16px; }
+/* ================= Circular 3D project gallery =================
+   Base component. Currently used as the homepage hero backdrop via the
+   .circular-gallery--hero modifier (see the Hero section above). */
 .circular-gallery {
   --gallery-radius: 480px; --gallery-card-w: 230px; --gallery-card-h: 300px;
   position: relative; width: 100%; height: 420px; margin-top: 3rem;
@@ -510,6 +514,45 @@ svg { display: block; }
   .circular-gallery-cap { padding: .6rem .5rem .5rem; }
   .circular-gallery-cap h3 { font-size: .72rem; }
   .circular-gallery-cap span { font-size: .6rem; }
+}
+
+/* ---- Hero modifier: fills the banner with large cards.
+   Must stay after the base rules above — same specificity, so order decides. ---- */
+.circular-gallery--hero {
+  --gallery-radius: 205px; --gallery-card-w: 148px; --gallery-card-h: 200px;
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; margin-top: 0;
+  perspective: 1500px;
+  /* Backdrop only — never intercept clicks meant for the hero copy/buttons. */
+  pointer-events: none; cursor: default;
+}
+@media (min-width: 640px) {
+  .circular-gallery--hero { --gallery-radius: 330px; --gallery-card-w: 235px; --gallery-card-h: 315px; perspective: 1700px; }
+}
+@media (min-width: 1024px) {
+  .circular-gallery--hero {
+    --gallery-radius: 480px; --gallery-card-w: 320px; --gallery-card-h: 430px;
+    perspective: 1900px;
+    /* Nudge the orbit right so the big cards sit beside the left-aligned copy,
+       while keeping most of the ring on screen. */
+    transform: translateX(12%);
+  }
+}
+@media (min-width: 1440px) {
+  .circular-gallery--hero { --gallery-radius: 600px; --gallery-card-w: 355px; --gallery-card-h: 475px; }
+}
+.circular-gallery--hero .circular-gallery-item {
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 70px rgba(0,0,0,.5);
+  border-color: rgba(255,255,255,.14);
+}
+.circular-gallery--hero .circular-gallery-cap { padding: 1.1rem 1rem .95rem; }
+.circular-gallery--hero .circular-gallery-cap h3 { font-size: 1.02rem; }
+.circular-gallery--hero .circular-gallery-cap span { font-size: .76rem; }
+@media (max-width: 639px) {
+  /* Captions would read straight through the hero copy at this size — the
+     cards work as pure backdrop instead. */
+  .circular-gallery--hero .circular-gallery-cap { display: none; }
 }
 
 /* ================= Trusted-by strip ================= */

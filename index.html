@@ -85,10 +85,51 @@
 <main id="main">
 <!-- ============ HERO ============ -->
 <section class="hero">
-  <div class="hero-slides">
-    <div class="hero-slide is-active" style="background-image:url('assets/img/nyabisindu-07-exterior-complete.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('assets/img/nyabisindu-06-exterior-dusk.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('assets/img/nyabisindu-05-interior-progress.jpg')"></div>
+  <!-- Rotating 3D gallery of completed projects, used as the hero backdrop.
+       Decorative here: the same photos are presented with full captions on the Projects page. -->
+  <div class="circular-gallery circular-gallery--hero" id="circularGallery" aria-hidden="true">
+    <div class="circular-gallery-track" id="circularGalleryTrack">
+      <div class="circular-gallery-item" style="transform: rotateY(0deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/nyabisindu-07-exterior-complete.jpg" alt="" loading="eager">
+        <div class="circular-gallery-cap"><h3>Nyabisindu Mini Market</h3><span>Muhanga District &middot; 2025</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(36deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/kigoma-05-classroom-block-finished.jpg" alt="" loading="eager">
+        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Classroom Block &middot; Ruhango</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(72deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/kigoma-07-dormitory-drying-yard.jpg" alt="" loading="lazy">
+        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Dormitory Block &middot; Ruhango</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(108deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/nyabisindu-06-exterior-dusk.jpg" alt="" loading="lazy">
+        <div class="circular-gallery-cap"><h3>Nyabisindu Mini Market</h3><span>Exterior at Dusk</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(144deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/kigoma-06-dormitory-interior.jpg" alt="" loading="lazy">
+        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Dormitory Interior</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(180deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/nyabisindu-03-steel-frame.jpg" alt="" loading="lazy">
+        <div class="circular-gallery-cap"><h3>Nyabisindu Mini Market</h3><span>Steel Roof Frame</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(216deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/kigoma-02-roof-truss-installation.jpg" alt="" loading="lazy">
+        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Roof Truss Installation</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(252deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/nyabisindu-08-sanitary-finishing.jpg" alt="" loading="lazy">
+        <div class="circular-gallery-cap"><h3>Nyabisindu Mini Market</h3><span>Sanitary Block Finishing</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(288deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/kigoma-01-ring-beam-team.jpg" alt="" loading="lazy">
+        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Structural Works</span></div>
+      </div>
+      <div class="circular-gallery-item" style="transform: rotateY(324deg) translateZ(var(--gallery-radius))">
+        <img src="assets/img/nyabisindu-02-foundation-works.jpg" alt="" loading="lazy">
+        <div class="circular-gallery-cap"><h3>Nyabisindu Mini Market</h3><span>Foundation Works</span></div>
+      </div>
+    </div>
   </div>
   <div class="container hero-content">
     <div class="hero-badge"><span class="dot"></span> Category B &middot; RDB-Registered Contractor &middot; Est. 2016</div>
@@ -113,7 +154,6 @@
       </div>
     </div>
   </div>
-  <div class="hero-dots" id="heroDots"></div>
   <div class="hero-scroll"><span>Scroll</span><span class="hero-scroll-line"></span></div>
 </section>
 
@@ -275,56 +315,6 @@
         <a href="projects.html#nyabisindu" class="btn btn-white">View Full Case Study</a>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ============ CIRCULAR PROJECT GALLERY ============ -->
-<section class="section circular-gallery-section">
-  <div class="container">
-    <div class="section-head center reveal">
-      <div class="eyebrow" style="justify-content:center">Completed Work</div>
-      <h2>A closer look at finished projects</h2>
-      <p>Real photos from ECOSG sites across Rwanda — drag to spin, or just watch it turn.</p>
-    </div>
-  </div>
-
-  <div class="circular-gallery reveal" id="circularGallery">
-    <div class="circular-gallery-track" id="circularGalleryTrack">
-      <div class="circular-gallery-item" style="transform: rotateY(0deg) translateZ(var(--gallery-radius))">
-        <img src="assets/img/nyabisindu-07-exterior-complete.jpg" alt="Completed Nyabisindu Mini Market building at golden hour" loading="lazy">
-        <div class="circular-gallery-cap"><h3>Nyabisindu Mini Market</h3><span>Muhanga District &middot; 2025</span></div>
-      </div>
-      <div class="circular-gallery-item" style="transform: rotateY(51.43deg) translateZ(var(--gallery-radius))">
-        <img src="assets/img/kigoma-05-classroom-block-finished.jpg" alt="Completed classroom block at Kigoma Secondary School" loading="lazy">
-        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Classroom Block &middot; Ruhango</span></div>
-      </div>
-      <div class="circular-gallery-item" style="transform: rotateY(102.86deg) translateZ(var(--gallery-radius))">
-        <img src="assets/img/kigoma-07-dormitory-drying-yard.jpg" alt="Completed two-storey dormitory building with drying yard at Kigoma Secondary School" loading="lazy">
-        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Dormitory Block &middot; Ruhango</span></div>
-      </div>
-      <div class="circular-gallery-item" style="transform: rotateY(154.29deg) translateZ(var(--gallery-radius))">
-        <img src="assets/img/kigoma-06-dormitory-interior.jpg" alt="Finished dormitory hall fitted with bunk beds at Kigoma Secondary School" loading="lazy">
-        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Dormitory Interior</span></div>
-      </div>
-      <div class="circular-gallery-item" style="transform: rotateY(205.71deg) translateZ(var(--gallery-radius))">
-        <img src="assets/img/kigoma-08-accessible-toilet.jpg" alt="Finished accessible toilet with grab rails at Kigoma Secondary School" loading="lazy">
-        <div class="circular-gallery-cap"><h3>Kigoma Secondary School</h3><span>Accessible Sanitary Block</span></div>
-      </div>
-      <div class="circular-gallery-item" style="transform: rotateY(257.14deg) translateZ(var(--gallery-radius))">
-        <img src="assets/img/nyabisindu-08-sanitary-finishing.jpg" alt="Finished tiled sanitary block at Nyabisindu Mini Market" loading="lazy">
-        <div class="circular-gallery-cap"><h3>Nyabisindu Mini Market</h3><span>Sanitary Block Finishing</span></div>
-      </div>
-      <div class="circular-gallery-item" style="transform: rotateY(308.57deg) translateZ(var(--gallery-radius))">
-        <img src="assets/img/nyabisindu-06-exterior-dusk.jpg" alt="Nyabisindu Mini Market exterior nearing completion at dusk" loading="lazy">
-        <div class="circular-gallery-cap"><h3>Nyabisindu Mini Market</h3><span>Exterior at Dusk</span></div>
-      </div>
-    </div>
-  </div>
-  <div class="container">
-    <p class="circular-gallery-hint">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M8 21H3v-5M21 3l-7.5 7.5M3 21l7.5-7.5"/></svg>
-      Drag left or right to explore every project
-    </p>
   </div>
 </section>
 
