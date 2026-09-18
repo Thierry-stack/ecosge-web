@@ -1,0 +1,12 @@
+# Raw source material (kept locally, not published):
+# - contains third-party personal contact details (client phone/email) or
+#   PII (National ID number on the RDB certificate)
+# - or is a duplicate/oversized original already optimized into assets/img/
+images/
+ok RDB CERTIFICATE.pdf
+COMPANY LOGO ECOSG.pdf
+ecosg_logo_square_full.png
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
