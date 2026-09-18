@@ -565,8 +565,6 @@ svg { display: block; }
 
 /* ================= Case-study gallery / lightbox ================= */
 .gallery-item-data-only { display: none; }
-.gallery-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: .85rem; }
-@media (min-width: 640px) { .gallery-grid { grid-template-columns: repeat(4,1fr); } }
 .gallery-item { position: relative; border-radius: var(--radius-sm); overflow: hidden; aspect-ratio: 4/3; cursor: zoom-in; }
 .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
 .gallery-item:hover img { transform: scale(1.08); }
@@ -575,17 +573,6 @@ svg { display: block; }
   opacity: 0; transition: opacity var(--dur-fast) var(--ease);
 }
 .gallery-item:hover::after { opacity: 1; }
-.gallery-cap {
-  position: absolute; left: .7rem; right: .7rem; bottom: .6rem; color: #fff; font-size: .72rem; font-weight: 600;
-  opacity: 0; transform: translateY(6px); transition: all var(--dur-fast) var(--ease); z-index: 1;
-}
-.gallery-item:hover .gallery-cap { opacity: 1; transform: translateY(0); }
-.gallery-zoom-hint {
-  position: absolute; top: .6rem; right: .6rem; width: 30px; height: 30px; border-radius: 50%; background: rgba(5,15,36,.55);
-  display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity var(--dur-fast) var(--ease); z-index: 1;
-}
-.gallery-item:hover .gallery-zoom-hint { opacity: 1; }
-.gallery-zoom-hint svg { width: 15px; height: 15px; color: #fff; }
 
 .lightbox {
   position: fixed; inset: 0; background: rgba(4,10,24,.94); z-index: 300; display: flex; align-items: center; justify-content: center;
@@ -606,6 +593,28 @@ svg { display: block; }
 .lightbox-next { right: 1.25rem; top: 50%; transform: translateY(-50%); }
 .lightbox-close svg, .lightbox-prev svg, .lightbox-next svg { width: 20px; height: 20px; }
 .lightbox-counter { position: absolute; bottom: 1.25rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.6); font-size: .8rem; }
+
+/* ================= Auto-swiping card image carousel =================
+   Declared after .gallery-item img / .project-card-media img on purpose:
+   those set `transition: transform ...` on the same elements at equal
+   specificity, and CSS lets the later rule win the whole `transition`
+   shorthand — so this must come last for the opacity crossfade to animate
+   instead of snapping. */
+.card-carousel { position: relative; width: 100%; height: 100%; }
+.card-carousel img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity 1.2s ease;
+}
+.card-carousel img.is-active { opacity: 1; }
+.card-carousel-dots {
+  position: absolute; bottom: .8rem; left: 50%; transform: translateX(-50%); z-index: 3;
+  display: flex; gap: .4rem;
+}
+.card-carousel-dots span {
+  width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.5);
+  transition: background .3s ease, transform .3s ease; box-shadow: 0 0 0 1px rgba(0,0,0,.15);
+}
+.card-carousel-dots span.is-active { background: #fff; transform: scale(1.5); }
 
 /* ================= About: story / mission / leadership ================= */
 .info-box {

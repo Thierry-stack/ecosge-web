@@ -103,6 +103,34 @@
     restart();
   }
 
+  /* ---------- Auto-swiping card image carousels (project cards, spotlight) ---------- */
+  document.querySelectorAll('.card-carousel').forEach(function (carousel, carouselIndex) {
+    var imgs = Array.prototype.slice.call(carousel.querySelectorAll('img'));
+    if (imgs.length < 2) return;
+    var dotsWrap = carousel.querySelector('.card-carousel-dots');
+    var dots = [];
+    if (dotsWrap) {
+      imgs.forEach(function (_, i) {
+        var d = document.createElement('span');
+        if (i === 0) d.classList.add('is-active');
+        dotsWrap.appendChild(d);
+        dots.push(d);
+      });
+    }
+    if (reduceMotion) return;
+    var current = 0;
+    function advance() {
+      imgs[current].classList.remove('is-active');
+      if (dots[current]) dots[current].classList.remove('is-active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('is-active');
+      if (dots[current]) dots[current].classList.add('is-active');
+    }
+    setTimeout(function () {
+      setInterval(advance, 3000);
+    }, carouselIndex * 450);
+  });
+
   /* ---------- Scroll reveal ---------- */
   var revealEls = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && revealEls.length) {
