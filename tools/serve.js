@@ -39,7 +39,7 @@ const server = http.createServer((req, res) => {
       const withHtml = filePath + '.html';
       fs.readFile(withHtml, (errHtml, dataHtml) => {
         if (errHtml) { res.writeHead(404); res.end('Not found: ' + urlPath); return; }
-        res.writeHead(200, { 'Content-Type': types['.html'] });
+        res.writeHead(200, { 'Content-Type': types['.html'], 'Cache-Control': 'no-store' });
         res.end(dataHtml);
       });
       return;
@@ -48,7 +48,8 @@ const server = http.createServer((req, res) => {
     fs.readFile(filePath, (err2, data) => {
       if (err2) { res.writeHead(404); res.end('Not found: ' + urlPath); return; }
       const ext = path.extname(filePath).toLowerCase();
-      res.writeHead(200, { 'Content-Type': types[ext] || 'application/octet-stream' });
+      // Dev server: never let the browser cache a stale copy while files are changing.
+      res.writeHead(200, { 'Content-Type': types[ext] || 'application/octet-stream', 'Cache-Control': 'no-store' });
       res.end(data);
     });
   });
