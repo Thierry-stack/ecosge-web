@@ -298,7 +298,7 @@ svg { display: block; }
        cards stay vivid. Kept to a single gradient — stacking a second one
        darkened the photos noticeably. */
     background:
-      linear-gradient(90deg, rgba(5,5,5,.93) 0%, rgba(5,5,5,.86) 30%, rgba(5,5,5,.45) 52%, rgba(5,5,5,.12) 72%, rgba(5,5,5,.08) 100%);
+      linear-gradient(90deg, rgba(5,5,5,.94) 0%, rgba(5,5,5,.9) 32%, rgba(5,5,5,.62) 48%, rgba(5,5,5,.16) 70%, rgba(5,5,5,.08) 100%);
   }
 }
 .hero-content { position: relative; z-index: 2; padding-block: 9rem 5rem; width: 100%; }
@@ -516,10 +516,13 @@ svg { display: block; }
   .circular-gallery-cap span { font-size: .6rem; }
 }
 
-/* ---- Hero modifier: fills the banner with large cards.
-   Must stay after the base rules above — same specificity, so order decides. ---- */
+/* ---- Hero modifier: fills the banner with the rotating cards.
+   Must stay after the base rules above — same specificity, so order decides.
+   Cards sit at ~2/3 of the orbit's spacing, which leaves a visible gap
+   between them as the ring turns. Radii are deliberately left large while
+   the cards are small — that gap is the effect. ---- */
 .circular-gallery--hero {
-  --gallery-radius: 205px; --gallery-card-w: 148px; --gallery-card-h: 200px;
+  --gallery-radius: 205px; --gallery-card-w: 99px; --gallery-card-h: 133px;
   position: absolute; inset: 0; z-index: 0;
   width: 100%; height: 100%; margin-top: 0;
   perspective: 1500px;
@@ -527,28 +530,28 @@ svg { display: block; }
   pointer-events: none; cursor: default;
 }
 @media (min-width: 640px) {
-  .circular-gallery--hero { --gallery-radius: 330px; --gallery-card-w: 235px; --gallery-card-h: 315px; perspective: 1700px; }
+  .circular-gallery--hero { --gallery-radius: 330px; --gallery-card-w: 157px; --gallery-card-h: 210px; perspective: 1700px; }
 }
 @media (min-width: 1024px) {
   .circular-gallery--hero {
-    --gallery-radius: 480px; --gallery-card-w: 320px; --gallery-card-h: 430px;
+    --gallery-radius: 480px; --gallery-card-w: 213px; --gallery-card-h: 287px;
     perspective: 1900px;
-    /* Nudge the orbit right so the big cards sit beside the left-aligned copy,
+    /* Nudge the orbit right so the cards sit beside the left-aligned copy,
        while keeping most of the ring on screen. */
     transform: translateX(12%);
   }
 }
 @media (min-width: 1440px) {
-  .circular-gallery--hero { --gallery-radius: 600px; --gallery-card-w: 355px; --gallery-card-h: 475px; }
+  .circular-gallery--hero { --gallery-radius: 600px; --gallery-card-w: 237px; --gallery-card-h: 317px; }
 }
 .circular-gallery--hero .circular-gallery-item {
-  border-radius: var(--radius-lg);
-  box-shadow: 0 30px 70px rgba(0,0,0,.5);
+  border-radius: var(--radius-md);
+  box-shadow: 0 22px 50px rgba(0,0,0,.5);
   border-color: rgba(255,255,255,.14);
 }
-.circular-gallery--hero .circular-gallery-cap { padding: 1.1rem 1rem .95rem; }
-.circular-gallery--hero .circular-gallery-cap h3 { font-size: 1.02rem; }
-.circular-gallery--hero .circular-gallery-cap span { font-size: .76rem; }
+.circular-gallery--hero .circular-gallery-cap { padding: .8rem .75rem .7rem; }
+.circular-gallery--hero .circular-gallery-cap h3 { font-size: .85rem; }
+.circular-gallery--hero .circular-gallery-cap span { font-size: .68rem; }
 @media (max-width: 639px) {
   /* Captions would read straight through the hero copy at this size — the
      cards work as pure backdrop instead. */

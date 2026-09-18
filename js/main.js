@@ -103,6 +103,7 @@
   if (circGallery && circTrack) {
     var circItems = Array.prototype.slice.call(circTrack.querySelectorAll('.circular-gallery-item'));
     var circAngles = circItems.map(function (_, i) { return i * (360 / circItems.length); });
+    var circCaps = circItems.map(function (item) { return item.querySelector('.circular-gallery-cap'); });
     var circRotation = 0;
     var circAutoSpeed = 0.045;
     var circDragging = false;
@@ -115,6 +116,12 @@
         var relative = ((circAngles[i] + circRotation) % 360 + 360) % 360;
         var normalized = relative > 180 ? 360 - relative : relative;
         item.style.opacity = Math.max(0.38, 1 - (normalized / 180) * 0.68);
+        // Label only the card facing the viewer. Cards drifting round to the
+        // left sit behind the hero copy, and their captions otherwise read
+        // straight through it.
+        if (circCaps[i]) {
+          circCaps[i].style.opacity = Math.min(1, Math.max(0, (45 - normalized) / 25));
+        }
       });
     }
     function circRender() {
