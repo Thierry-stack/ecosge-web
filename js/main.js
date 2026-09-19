@@ -92,9 +92,32 @@
       imgs[current].classList.add('is-active');
       if (dots[current]) dots[current].classList.add('is-active');
     }
-    setTimeout(function () {
-      setInterval(advance, 3000);
-    }, carouselIndex * 450);
+    // Only tick while the card is actually on screen. Twelve carousels all
+    // firing every 3s for the whole visit is work nobody sees.
+    var timer = null, startDelay = null;
+    function startCarousel() {
+      if (timer || document.hidden) return;
+      startDelay = setTimeout(function () {
+        startDelay = null;
+        timer = setInterval(advance, 3000);
+      }, carouselIndex * 450);
+    }
+    function stopCarousel() {
+      if (startDelay) { clearTimeout(startDelay); startDelay = null; }
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+    if ('IntersectionObserver' in window) {
+      var cio = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) startCarousel(); else stopCarousel();
+      }, { rootMargin: '150px' });
+      cio.observe(carousel);
+    } else {
+      startCarousel();
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stopCarousel();
+      else if (carousel.getBoundingClientRect().top < innerHeight + 150) startCarousel();
+    });
   });
 
   /* ---------- Circular 3D project gallery (auto-rotate + drag) ---------- */
@@ -130,11 +153,31 @@
     }
     circRender();
 
-    (function circFrame() {
+    // The ring lives in the hero. Once it scrolls away — or the tab goes to
+    // the background — the loop stops entirely instead of burning a frame's
+    // worth of style writes forever.
+    var circRaf = null, circVisible = true;
+    function circFrame() {
       if (!circDragging && !circPaused && !reduceMotion) circRotation += circAutoSpeed;
       circRender();
-      requestAnimationFrame(circFrame);
-    })();
+      circRaf = requestAnimationFrame(circFrame);
+    }
+    function circStart() {
+      if (circRaf === null && circVisible && !document.hidden) circRaf = requestAnimationFrame(circFrame);
+    }
+    function circStop() {
+      if (circRaf !== null) { cancelAnimationFrame(circRaf); circRaf = null; }
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        circVisible = entries[0].isIntersecting;
+        if (circVisible) circStart(); else circStop();
+      }, { rootMargin: '100px' }).observe(circGallery);
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) circStop(); else circStart();
+    });
+    circStart();
 
     circGallery.addEventListener('mouseenter', function () { circPaused = true; });
     circGallery.addEventListener('mouseleave', function () { circPaused = false; });
