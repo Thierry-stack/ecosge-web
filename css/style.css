@@ -282,18 +282,12 @@ svg { display: block; }
   position: relative; min-height: 100vh; display: flex; align-items: center;
   overflow: hidden; background: var(--navy-950);
 }
-/* Scrim over the rotating gallery. Horizontal on wide screens so the
-   left-aligned copy stays readable while the cards on the right stay vivid;
-   pointer-events:none so it never swallows clicks meant for the content. */
-.hero::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
-  /* Narrow screens: copy sits directly over the cards, so the scrim has to
-     carry more weight than it does on desktop. */
-  background:
-    linear-gradient(180deg, rgba(5,5,5,.8) 0%, rgba(5,5,5,.74) 30%, rgba(5,5,5,.76) 70%, rgba(5,5,5,.9) 100%);
-}
+/* Below 1024px the hero stacks (gallery band above, copy below), so the copy
+   never sits on the photos and no scrim is needed. The scrim only exists for
+   the wide-screen overlay layout. */
 @media (min-width: 1024px) {
   .hero::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
     /* Heavy on the left behind the copy, near-clear on the right so the
        cards stay vivid. Kept to a single gradient — stacking a second one
        darkened the photos noticeably. */
@@ -302,6 +296,7 @@ svg { display: block; }
   }
 }
 .hero-content { position: relative; z-index: 2; padding-block: 9rem 5rem; width: 100%; }
+
 .hero-badge {
   display: inline-flex; align-items: center; gap: .6rem; background: rgba(255,255,255,.12);
   border: 1px solid rgba(255,255,255,.25); color: #fff; padding: .5rem 1.1rem;
@@ -325,6 +320,17 @@ svg { display: block; }
 }
 .hero-scroll-line { width: 1px; height: 34px; background: linear-gradient(180deg, rgba(255,255,255,.9), transparent); animation: scrollpulse 2s infinite; }
 @keyframes scrollpulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+
+/* ---- Stacked hero for phones/tablets: gallery band on top, copy underneath.
+   Overlaying the two at this width left the cards drifting behind the
+   paragraph, which read as clutter.
+   Must sit after the base .hero rules above — same specificity, so order
+   decides which wins. ---- */
+@media (max-width: 1023px) {
+  .hero { display: block; min-height: 0; padding-top: 5.25rem; }
+  .hero-content { padding-block: 1.75rem 3.25rem; }
+  .hero-scroll { display: none; }
+}
 
 /* The hero's rotating gallery backdrop is styled with the
    .circular-gallery--hero modifier, defined after the base component below. */
@@ -522,20 +528,27 @@ svg { display: block; }
    between them as the ring turns. Radii are deliberately left large while
    the cards are small — that gap is the effect. ---- */
 .circular-gallery--hero {
-  --gallery-radius: 205px; --gallery-card-w: 99px; --gallery-card-h: 133px;
-  position: absolute; inset: 0; z-index: 0;
-  width: 100%; height: 100%; margin-top: 0;
+  /* Below 1024px this is an in-flow band above the copy, not a backdrop. */
+  --gallery-radius: 225px; --gallery-card-w: 124px; --gallery-card-h: 166px;
+  position: relative; z-index: 0;
+  width: 100%; height: 270px; margin-top: 0;
   perspective: 1500px;
-  /* Backdrop only — never intercept clicks meant for the hero copy/buttons. */
+  /* Never intercept clicks meant for the hero copy/buttons. */
   pointer-events: none; cursor: default;
 }
 @media (min-width: 640px) {
-  .circular-gallery--hero { --gallery-radius: 330px; --gallery-card-w: 157px; --gallery-card-h: 210px; perspective: 1700px; }
+  .circular-gallery--hero {
+    --gallery-radius: 330px; --gallery-card-w: 157px; --gallery-card-h: 210px;
+    height: 330px; perspective: 1700px;
+  }
 }
 @media (min-width: 1024px) {
   .circular-gallery--hero {
     --gallery-radius: 480px; --gallery-card-w: 213px; --gallery-card-h: 287px;
     perspective: 1900px;
+    /* Wide screens have room for the overlay layout: the ring becomes a
+       full-bleed backdrop behind the copy again. */
+    position: absolute; inset: 0; height: 100%;
     /* Nudge the orbit right so the cards sit beside the left-aligned copy,
        while keeping most of the ring on screen. */
     transform: translateX(12%);
@@ -553,9 +566,10 @@ svg { display: block; }
 .circular-gallery--hero .circular-gallery-cap h3 { font-size: .85rem; }
 .circular-gallery--hero .circular-gallery-cap span { font-size: .68rem; }
 @media (max-width: 639px) {
-  /* Captions would read straight through the hero copy at this size — the
-     cards work as pure backdrop instead. */
-  .circular-gallery--hero .circular-gallery-cap { display: none; }
+  /* Cards are small here, so the label is trimmed to the project name. */
+  .circular-gallery--hero .circular-gallery-cap { padding: .5rem .45rem .45rem; }
+  .circular-gallery--hero .circular-gallery-cap h3 { font-size: .62rem; }
+  .circular-gallery--hero .circular-gallery-cap span { display: none; }
 }
 
 /* ================= Trusted-by strip ================= */
