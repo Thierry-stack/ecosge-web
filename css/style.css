@@ -386,9 +386,14 @@ svg { display: block; }
 @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
 
 /* ================= Stats ================= */
+/* No negative pull here. The card used to sit straight after the hero and
+   lift onto its dark base; once the ticker landed between them the pull
+   dragged the card 72px up behind that strip instead, and the ticker paints
+   above it, so the yellow band cut the numbers in half. */
 .stats-band {
-  position: relative; z-index: 3; margin-top: -4.5rem;
+  position: relative; z-index: 3; margin-top: 3rem;
 }
+@media (max-width: 639px) { .stats-band { margin-top: 2rem; } }
 .stats-card {
   background: linear-gradient(120deg, var(--navy-900) 0%, var(--navy-800) 55%, var(--navy-700) 100%);
   border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
