@@ -278,18 +278,30 @@ svg { display: block; }
 }
 
 /* ================= Hero (home) ================= */
-/* The hero stacks at every width now: headline and paragraph, the gallery
-   band directly beneath them, then the buttons and stats. Because the copy
-   never overlays the photos there is no scrim, and the hero is as tall as its
-   content rather than pinned to 100vh. */
 .hero {
-  position: relative; overflow: hidden; background: var(--navy-950);
-  display: flex; flex-direction: column;
+  position: relative; min-height: 100vh; overflow: hidden; background: var(--navy-950);
+  /* Column flex so the two copy containers (which the gallery sits between)
+     stack instead of lining up side by side; centring moves to
+     justify-content now that the main axis is vertical. */
+  display: flex; flex-direction: column; justify-content: center; align-items: stretch;
 }
-/* The copy is split in two containers with the gallery between them, so the
-   banner's vertical padding is split across them as well. */
-.hero-content { position: relative; z-index: 2; padding-block: 5.75rem 0; width: 100%; }
-.hero-content--actions { padding-block: 0 4.5rem; }
+/* Below 1024px the hero stacks (copy, gallery band, then the buttons), so the
+   copy never sits on the photos and no scrim is needed. The scrim only exists
+   for the wide-screen overlay layout. */
+@media (min-width: 1024px) {
+  .hero::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    /* Heavy on the left behind the copy, near-clear on the right so the
+       cards stay vivid. Kept to a single gradient — stacking a second one
+       darkened the photos noticeably. */
+    background:
+      linear-gradient(90deg, rgba(5,5,5,.94) 0%, rgba(5,5,5,.9) 32%, rgba(5,5,5,.62) 48%, rgba(5,5,5,.16) 70%, rgba(5,5,5,.08) 100%);
+  }
+}
+/* The hero copy is split in two containers with the gallery between them, so
+   the banner's vertical padding is split across them as well. */
+.hero-content { position: relative; z-index: 2; padding-block: 9rem 0; width: 100%; }
+.hero-content--actions { padding-block: 0 5rem; }
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: .6rem; background: rgba(255,255,255,.12);
@@ -302,24 +314,43 @@ svg { display: block; }
   color: #fff; font-size: clamp(1.9rem, 4.2vw, 3.2rem); max-width: 18ch; margin-bottom: 1.2rem;
 }
 .hero h1 em { color: var(--sky-400); font-style: normal; }
-.hero-lead { color: rgba(255,255,255,.86); font-size: clamp(.94rem, 1.25vw, 1.05rem); max-width: 48ch; margin-bottom: 1.25rem; }
+.hero-lead { color: rgba(255,255,255,.86); font-size: clamp(.94rem, 1.25vw, 1.05rem); max-width: 48ch; margin-bottom: 2.1rem; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
 .hero-meta { display: flex; flex-wrap: wrap; gap: 1.8rem; }
 .hero-meta-item { display: flex; align-items: center; gap: .65rem; color: rgba(255,255,255,.85); font-size: .88rem; font-weight: 500; }
 .hero-meta-item svg { width: 20px; height: 20px; color: var(--sky-400); flex-shrink: 0; }
-/* ---- Phones and tablets: same stack, tightened so the gallery band still
-   breaks the fold rather than sitting entirely off-screen on a phone.
+.hero-scroll {
+  position: absolute; bottom: 1.9rem; left: 50%; transform: translateX(-50%); z-index: 2;
+  display: flex; flex-direction: column; align-items: center; gap: .5rem; color: rgba(255,255,255,.7);
+  font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+}
+.hero-scroll-line { width: 1px; height: 34px; background: linear-gradient(180deg, rgba(255,255,255,.9), transparent); animation: scrollpulse 2s infinite; }
+@keyframes scrollpulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
+
+/* ---- Stacked hero for phones/tablets: headline and paragraph, then the
+   gallery band, then the buttons and stats. Overlaying copy and cards at
+   this width left them drifting behind each other, which read as clutter.
    Must sit after the base .hero rules above — same specificity, so order
    decides which wins. ---- */
 @media (max-width: 1023px) {
-  .hero { padding-top: 5.25rem; }
-  .hero-content { padding-block: .75rem 0; }
-  .hero-content--actions { padding-block: 0 2.5rem; }
+  .hero { display: flex; flex-direction: column; min-height: 0; padding-top: 5.25rem; }
+  .hero-content { order: 1; padding-block: .75rem 0; }
+  .circular-gallery--hero { order: 2; margin-bottom: 1.6rem; }
+  .hero-content--actions { order: 3; padding-block: 0 2.5rem; }
+  .hero-scroll { display: none; }
+  /* Tightened so the gallery below the copy still breaks the fold rather
+     than sitting entirely off-screen on a phone. */
   .hero-badge { margin-bottom: 1rem; }
   .hero h1 { margin-bottom: .85rem; }
-  .hero-lead { margin-bottom: 1.25rem; }
+  .hero-lead { margin-bottom: 1.5rem; }
   .hero-actions { margin-bottom: 1.75rem; }
   .hero-meta { gap: .85rem 1.4rem; }
+}
+/* ---- Phone only: sit the gallery band directly under the paragraph. The
+   tablet gap above reads as breathing room at that width, but on a phone it
+   pushed the cards away from the copy they belong to. ---- */
+@media (max-width: 639px) {
+  .hero-lead { margin-bottom: .8rem; }
 }
 
 /* The hero's rotating gallery backdrop is styled with the
@@ -512,48 +543,43 @@ svg { display: block; }
   .circular-gallery-cap span { font-size: .6rem; }
 }
 
-/* ---- Hero modifier: a full-width band of rotating cards sitting directly
-   under the hero paragraph. Must stay after the base rules above — same
-   specificity, so order decides.
-   Cards are sized to about 85% of the orbit's chord, so the ring reads as a
-   near-continuous run of photos with only a slim gap showing between them.
-   The band's height tracks the card height, leaving just enough room for the
-   drop shadows — extra height here only shows up as dead black space. ---- */
+/* ---- Hero modifier: fills the banner with the rotating cards.
+   Must stay after the base rules above — same specificity, so order decides.
+   Cards sit at ~2/3 of the orbit's spacing, which leaves a visible gap
+   between them as the ring turns. Radii are deliberately left large while
+   the cards are small — that gap is the effect. ---- */
 .circular-gallery--hero {
-  --gallery-radius: 225px; --gallery-card-w: 124px; --gallery-card-h: 166px;
+  /* Phone values. Below 1024px this is an in-flow band between the copy and
+     the buttons, not a backdrop. The band is sized to just clear the front
+     card once perspective scales it up (200px x 1400/(1400-280) = 250px), so
+     there's no dead space padding the cards away from the paragraph above. */
+  --gallery-radius: 280px; --gallery-card-w: 150px; --gallery-card-h: 200px;
   position: relative; z-index: 0;
-  width: 100%; height: 200px; margin-top: 0; margin-bottom: 1.6rem;
-  perspective: 1500px;
+  width: 100%; height: 262px; margin-top: 0;
+  perspective: 1400px;
   /* Never intercept clicks meant for the hero copy/buttons. */
   pointer-events: none; cursor: default;
 }
 @media (min-width: 640px) {
   .circular-gallery--hero {
-    --gallery-radius: 330px; --gallery-card-w: 171px; --gallery-card-h: 229px;
-    height: 265px; perspective: 1700px;
+    --gallery-radius: 330px; --gallery-card-w: 157px; --gallery-card-h: 210px;
+    height: 330px; perspective: 1700px;
   }
 }
 @media (min-width: 1024px) {
   .circular-gallery--hero {
-    --gallery-radius: 480px; --gallery-card-w: 249px; --gallery-card-h: 333px;
-    height: 356px; perspective: 1900px; margin-bottom: 1.5rem;
+    --gallery-radius: 480px; --gallery-card-w: 213px; --gallery-card-h: 287px;
+    perspective: 1900px;
+    /* Wide screens have room for the overlay layout: the ring becomes a
+       full-bleed backdrop behind the copy again. */
+    position: absolute; inset: 0; height: 100%;
+    /* Nudge the orbit right so the cards sit beside the left-aligned copy,
+       while keeping most of the ring on screen. */
+    transform: translateX(12%);
   }
 }
 @media (min-width: 1440px) {
-  .circular-gallery--hero {
-    --gallery-radius: 540px; --gallery-card-w: 285px; --gallery-card-h: 380px;
-    height: 400px; margin-bottom: 1.5rem;
-  }
-}
-/* Laptop screens are wide but short. At full size the ring pushed the CTAs
-   off the bottom, so below ~850px of viewport height the orbit scales down
-   instead — still reaching both edges, just on a shorter band. Comes after
-   the width tiers above: same specificity, so source order decides. */
-@media (min-width: 1024px) and (max-height: 850px) {
-  .circular-gallery--hero {
-    --gallery-radius: 455px; --gallery-card-w: 213px; --gallery-card-h: 285px;
-    height: 305px;
-  }
+  .circular-gallery--hero { --gallery-radius: 600px; --gallery-card-w: 237px; --gallery-card-h: 317px; }
 }
 .circular-gallery--hero .circular-gallery-item {
   border-radius: var(--radius-md);
@@ -563,15 +589,10 @@ svg { display: block; }
 .circular-gallery--hero .circular-gallery-cap { padding: .8rem .75rem .7rem; }
 .circular-gallery--hero .circular-gallery-cap h3 { font-size: .85rem; }
 .circular-gallery--hero .circular-gallery-cap span { font-size: .68rem; }
-@media (min-width: 1024px) {
-  .circular-gallery--hero .circular-gallery-cap { padding: 1.1rem .95rem .9rem; }
-  .circular-gallery--hero .circular-gallery-cap h3 { font-size: 1.02rem; }
-  .circular-gallery--hero .circular-gallery-cap span { font-size: .78rem; }
-}
 @media (max-width: 639px) {
-  /* Cards are small here, so the label is trimmed to the project name. */
-  .circular-gallery--hero .circular-gallery-cap { padding: .5rem .45rem .45rem; }
-  .circular-gallery--hero .circular-gallery-cap h3 { font-size: .62rem; }
+  /* Narrow cards, so the label is trimmed to the project name. */
+  .circular-gallery--hero .circular-gallery-cap { padding: .7rem .6rem .6rem; }
+  .circular-gallery--hero .circular-gallery-cap h3 { font-size: .74rem; }
   .circular-gallery--hero .circular-gallery-cap span { display: none; }
 }
 
