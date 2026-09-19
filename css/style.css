@@ -310,10 +310,10 @@ svg { display: block; }
 }
 .hero-badge span.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sky-400); }
 .hero h1 {
-  color: #fff; font-size: clamp(2.3rem, 5.4vw, 4.1rem); max-width: 15ch; margin-bottom: 1.3rem;
+  color: #fff; font-size: clamp(1.9rem, 4.2vw, 3.2rem); max-width: 18ch; margin-bottom: 1.2rem;
 }
 .hero h1 em { color: var(--sky-400); font-style: normal; }
-.hero-lead { color: rgba(255,255,255,.86); font-size: clamp(1.02rem, 1.6vw, 1.2rem); max-width: 46ch; margin-bottom: 2.2rem; }
+.hero-lead { color: rgba(255,255,255,.86); font-size: clamp(.94rem, 1.25vw, 1.05rem); max-width: 48ch; margin-bottom: 2.1rem; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
 .hero-meta { display: flex; flex-wrap: wrap; gap: 1.8rem; }
 .hero-meta-item { display: flex; align-items: center; gap: .65rem; color: rgba(255,255,255,.85); font-size: .88rem; font-weight: 500; }
