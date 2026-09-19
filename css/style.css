@@ -279,12 +279,15 @@ svg { display: block; }
 
 /* ================= Hero (home) ================= */
 .hero {
-  position: relative; min-height: 100vh; display: flex; align-items: center;
-  overflow: hidden; background: var(--navy-950);
+  position: relative; min-height: 100vh; overflow: hidden; background: var(--navy-950);
+  /* Column flex so the two copy containers (which the gallery sits between)
+     stack instead of lining up side by side; centring moves to
+     justify-content now that the main axis is vertical. */
+  display: flex; flex-direction: column; justify-content: center; align-items: stretch;
 }
-/* Below 1024px the hero stacks (gallery band above, copy below), so the copy
-   never sits on the photos and no scrim is needed. The scrim only exists for
-   the wide-screen overlay layout. */
+/* Below 1024px the hero stacks (copy, gallery band, then the buttons), so the
+   copy never sits on the photos and no scrim is needed. The scrim only exists
+   for the wide-screen overlay layout. */
 @media (min-width: 1024px) {
   .hero::after {
     content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
@@ -295,7 +298,10 @@ svg { display: block; }
       linear-gradient(90deg, rgba(5,5,5,.94) 0%, rgba(5,5,5,.9) 32%, rgba(5,5,5,.62) 48%, rgba(5,5,5,.16) 70%, rgba(5,5,5,.08) 100%);
   }
 }
-.hero-content { position: relative; z-index: 2; padding-block: 9rem 5rem; width: 100%; }
+/* The hero copy is split in two containers with the gallery between them, so
+   the banner's vertical padding is split across them as well. */
+.hero-content { position: relative; z-index: 2; padding-block: 9rem 0; width: 100%; }
+.hero-content--actions { padding-block: 0 5rem; }
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: .6rem; background: rgba(255,255,255,.12);
@@ -321,15 +327,24 @@ svg { display: block; }
 .hero-scroll-line { width: 1px; height: 34px; background: linear-gradient(180deg, rgba(255,255,255,.9), transparent); animation: scrollpulse 2s infinite; }
 @keyframes scrollpulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
 
-/* ---- Stacked hero for phones/tablets: gallery band on top, copy underneath.
-   Overlaying the two at this width left the cards drifting behind the
-   paragraph, which read as clutter.
+/* ---- Stacked hero for phones/tablets: headline and paragraph, then the
+   gallery band, then the buttons and stats. Overlaying copy and cards at
+   this width left them drifting behind each other, which read as clutter.
    Must sit after the base .hero rules above — same specificity, so order
    decides which wins. ---- */
 @media (max-width: 1023px) {
-  .hero { display: block; min-height: 0; padding-top: 5.25rem; }
-  .hero-content { padding-block: 1.75rem 3.25rem; }
+  .hero { display: flex; flex-direction: column; min-height: 0; padding-top: 5.25rem; }
+  .hero-content { order: 1; padding-block: .75rem 0; }
+  .circular-gallery--hero { order: 2; margin-bottom: 1.6rem; }
+  .hero-content--actions { order: 3; padding-block: 0 2.5rem; }
   .hero-scroll { display: none; }
+  /* Tightened so the gallery below the copy still breaks the fold rather
+     than sitting entirely off-screen on a phone. */
+  .hero-badge { margin-bottom: 1rem; }
+  .hero h1 { margin-bottom: .85rem; }
+  .hero-lead { margin-bottom: 1.5rem; }
+  .hero-actions { margin-bottom: 1.75rem; }
+  .hero-meta { gap: .85rem 1.4rem; }
 }
 
 /* The hero's rotating gallery backdrop is styled with the

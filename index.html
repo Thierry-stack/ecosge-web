@@ -85,8 +85,13 @@
 <main id="main">
 <!-- ============ HERO ============ -->
 <section class="hero">
-  <!-- Rotating 3D gallery of completed projects, used as the hero backdrop.
-       Decorative here: the same photos are presented with full captions on the Projects page. -->
+  <div class="container hero-content">
+    <div class="hero-badge"><span class="dot"></span> Category B &middot; RDB-Registered Contractor &middot; Est. 2016</div>
+    <h1>We build <em>until it's done.</em></h1>
+    <p class="hero-lead">ECOSG Company Ltd is a Kigali-based Category B construction company delivering buildings, roads, bridges, health facilities and public infrastructure across Rwanda for districts, national institutions and private clients alike.</p>
+  </div>
+  <!-- Rotating 3D gallery of completed projects. Sits between the copy and the
+       CTAs on narrow screens; becomes the full hero backdrop from 1024px up. -->
   <div class="circular-gallery circular-gallery--hero" id="circularGallery" aria-hidden="true">
     <div class="circular-gallery-track" id="circularGalleryTrack">
       <div class="circular-gallery-item" style="transform: rotateY(0deg) translateZ(var(--gallery-radius))">
@@ -131,10 +136,7 @@
       </div>
     </div>
   </div>
-  <div class="container hero-content">
-    <div class="hero-badge"><span class="dot"></span> Category B &middot; RDB-Registered Contractor &middot; Est. 2016</div>
-    <h1>We build <em>until it's done.</em></h1>
-    <p class="hero-lead">ECOSG Company Ltd is a Kigali-based Category B construction company delivering buildings, roads, bridges, health facilities and public infrastructure across Rwanda for districts, national institutions and private clients alike.</p>
+  <div class="container hero-content hero-content--actions">
     <div class="hero-actions">
       <a href="projects.html" class="btn btn-primary btn-lg">View Our Projects</a>
       <a href="contact.html" class="btn btn-outline-light btn-lg">Get a Free Quote</a>
