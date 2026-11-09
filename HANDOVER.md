@@ -77,14 +77,16 @@ index.html          Home — hero + rotating gallery, ticker, stats, about tease
                     services teaser, featured spotlight, trusted strip, CTA
 about.html          Story, mission/vision, leadership, credentials
 services.html       8 service cards + 5-step process timeline
-projects.html       12 project cards, filterable, with grouped lightbox
+projects.html       12 project cards, filterable, with grouped lightbox.
+                    5 have image sets; 7 still show the "Project Record"
+                    placeholder because no photos exist for them yet.
 contact.html        Form, WhatsApp, map, contact details
 
 css/style.css       892 lines. The entire design system. Single file by design.
 js/main.js          362 lines. One IIFE, 12 labelled sections. No dependencies.
 tools/serve.js      Dev-only static server.
 
-assets/img/         56 files: 16 base photos + 36 sized variants + logo + 3 favicons
+assets/img/         106 files: 34 base images + 68 sized variants + logo + 3 favicons
 .claude/launch.json Preview config for Claude Code
 sitemap.xml         5 URLs
 robots.txt          Allow all
@@ -176,15 +178,31 @@ This is the least obvious part of the project and the easiest to break.
 | `name-720.jpg` | 720px | Hero ring on retina screens |
 | `name-480.jpg` | 480px | Hero ring on 1x screens, hidden lightbox-only thumbs |
 
-Not every base has every tier — a tier is only generated if something references it, and never upscaled. Current coverage:
+Not every base has every tier — a tier is only generated if something references it, and never upscaled. There are 34 bases across five project sets:
 
-```
-full 480 720 1000  kigoma-01, kigoma-02, kigoma-05, kigoma-06, kigoma-07,
-                   nyabisindu-02, nyabisindu-03, nyabisindu-08
-full 480 1000      kigoma-03, nyabisindu-04
-full 480 720       nyabisindu-06, nyabisindu-07
-full 480           kigoma-04, kigoma-08, nyabisindu-01, nyabisindu-05
-```
+| Set | Bases | What they are |
+|---|---|---|
+| `kigoma-*` | 10 | 8 site photos + 2 renderings |
+| `nyabisindu-*` | 10 | 8 site photos + 2 renderings |
+| `gasabo-*` | 8 | 4 site photos + 4 renderings |
+| `kicukiro-*` | 3 | renderings only — not built yet |
+| `nyamabuye-*` | 3 | photos of the completed building |
+
+The `-720` tier exists only for the ten hero-ring photos. Run `ls assets/img` for exact per-file coverage.
+
+### Renderings are labelled, deliberately
+
+Several sets mix real site photographs with architect's renderings. Two projects — **Commercial Building G+3, Kicukiro** (due 2026) and **Public Commercial Building, Gasabo** (due 2027) — are not built yet, and everything shown for Kicukiro is a rendering.
+
+Three conventions keep that honest. Keep them:
+
+- Rendering filenames carry `-design-`, e.g. `kicukiro-01-design-street-elevation.jpg`.
+- Their `alt` text begins "Architectural rendering of…", never a description of a real building.
+- The card's count badge states what the set actually holds: `3 photos`, `3 design visuals`, or `8 photos &amp; visuals` for a mixed set. That text is plain content in `projects.html` — update it when you add images or it will misreport the count.
+
+For a mixed set on an ongoing project, lead the carousel with a real site photo so the card shows current state first, then follow with renderings.
+
+Renderings are kept out of the home page's rotating hero ring, which is for completed work only.
 
 ### Why 1200px is the ceiling
 
