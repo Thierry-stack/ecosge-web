@@ -556,11 +556,14 @@ svg { display: block; }
 .circular-gallery--hero {
   /* Phone values. Below 1024px this is an in-flow band between the copy and
      the buttons, not a backdrop. The band is sized to just clear the front
-     card once perspective scales it up (200px x 1400/(1400-280) = 250px), so
-     there's no dead space padding the cards away from the paragraph above. */
-  --gallery-radius: 280px; --gallery-card-w: 150px; --gallery-card-h: 200px;
+     card once perspective scales it up (200px x 1400/(1400-320) = 260px), so
+     there's no dead space padding the cards away from the paragraph above.
+     The radius is set by the card count, not by taste: 13 cards sit 360/13 =
+     27.7deg apart, and at r=280 the front card overlapped its neighbour. Add
+     cards here and this has to grow again (and the height with it). */
+  --gallery-radius: 320px; --gallery-card-w: 150px; --gallery-card-h: 200px;
   position: relative; z-index: 0;
-  width: 100%; height: 262px; margin-top: 0;
+  width: 100%; height: 266px; margin-top: 0;
   perspective: 1400px;
   /* Never intercept clicks meant for the hero copy/buttons. */
   pointer-events: none; cursor: default;
